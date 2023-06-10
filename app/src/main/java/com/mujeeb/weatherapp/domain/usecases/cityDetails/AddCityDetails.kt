@@ -6,6 +6,6 @@ import javax.inject.Inject
 
 class AddCityDetails @Inject constructor(private val localDataSource: CityDetailLocalDataSource) {
     suspend operator fun invoke(response: Response) {
-        return localDataSource.inserttWeatherResponse(response)
+        localDataSource.inserttWeatherResponse(response)
     }
 }

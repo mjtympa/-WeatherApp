@@ -71,12 +71,9 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
-
-
     // Support Libraries
     implementation "com.android.support:recyclerview-v7:$support_library_version"
     implementation "com.android.support:cardview-v7:$support_library_version"
-
 
     // LiveData & ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
@@ -87,7 +84,6 @@ dependencies {
     //Picasso
     implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
     implementation "com.squareup.picasso:picasso:$picasso_version"
-
 
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -110,6 +106,16 @@ dependencies {
     //Navigation components
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+
+    // For local unit tests
+    implementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation 'com.google.dagger:hilt-android-testing:2.44.1'
+    kaptTest 'com.google.dagger:hilt-compiler:2.44.1'
+    implementation("androidx.fragment:fragment-ktx:1.5.5")
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.13.3'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
 
 
 
