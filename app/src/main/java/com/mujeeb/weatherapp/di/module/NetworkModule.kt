@@ -2,10 +2,10 @@ package com.mujeeb.weatherapp.di.module
 
 import android.content.Context
 import com.mujeeb.weatherapp.BuildConfig
-import com.mujeeb.weatherapp.common.utils.REQUEST_TIMEOUT
-import com.mujeeb.weatherapp.common.utils.RETROFIT_CACHE_SIZE
-import com.mujeeb.weatherapp.data.net.CityDetailApiCall
-import com.mujeeb.weatherapp.data.net.CityListApiCall
+import com.mujeeb.weatherapp.utils.REQUEST_TIMEOUT
+import com.mujeeb.weatherapp.utils.RETROFIT_CACHE_SIZE
+import com.mujeeb.weatherapp.data.network.client.CityListApiClient
+import com.mujeeb.weatherapp.data.network.client.CityForecastApiClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -59,9 +59,9 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideWeatherApiCall(retrofit: Retrofit): CityDetailApiCall = retrofit.create(CityDetailApiCall::class.java)
+    fun provideWeatherApiCall(retrofit: Retrofit): CityListApiClient = retrofit.create(CityListApiClient::class.java)
 
     @Provides
     @Singleton
-    fun provideCityApiCall(retrofit: Retrofit): CityListApiCall = retrofit.create(CityListApiCall::class.java)
+    fun provideCityApiCall(retrofit: Retrofit): CityForecastApiClient = retrofit.create(CityForecastApiClient::class.java)
 }

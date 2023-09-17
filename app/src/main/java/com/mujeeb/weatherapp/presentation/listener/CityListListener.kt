@@ -1,8 +1,10 @@
 package com.mujeeb.weatherapp.presentation.listener
 
-import com.mujeeb.weatherapp.data.model.city_list.Result
+import com.mujeeb.weatherapp.presentation.viewstate.CityViewState
+import com.mujeeb.weatherapp.presentation.viewstate.WeatherResultViewState
+
 
 interface CityListListener {
 
-    fun onItemSelected(cityList: Result)
+    fun onItemSelected(result : WeatherResultViewState)
 }

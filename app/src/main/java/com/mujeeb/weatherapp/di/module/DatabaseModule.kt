@@ -2,9 +2,9 @@ package com.mujeeb.weatherapp.di.module
 
 import android.content.Context
 import androidx.room.Room
-import com.mujeeb.weatherapp.data.database.CityRoomDatabase
-import com.mujeeb.weatherapp.data.database.dao.CityResponseDao
-import com.mujeeb.weatherapp.data.database.dao.WeatherResponseDao
+import com.mujeeb.weatherapp.data.database.ForecastRoomDatabase
+import com.mujeeb.weatherapp.data.database.dao.CityListDao
+import com.mujeeb.weatherapp.data.database.dao.CityForecastDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,21 +16,21 @@ import javax.inject.Singleton
 @Module
 object DatabaseModule {
     @Provides
-    fun provideCityResponseDao(cityRoomDatabase: CityRoomDatabase): CityResponseDao {
-        return cityRoomDatabase.cityResponseDao()
+    fun provideCityResponseDao(forecastRoomDatabase: ForecastRoomDatabase): CityListDao {
+        return forecastRoomDatabase.cityResponseDao()
     }
 
     @Provides
-    fun provideWeatherResponseDao(cityRoomDatabase: CityRoomDatabase): WeatherResponseDao {
-        return cityRoomDatabase.weatherResponseDao()
+    fun provideWeatherResponseDao(forecastRoomDatabase: ForecastRoomDatabase): CityForecastDao {
+        return forecastRoomDatabase.weatherResponseDao()
     }
 
     @Provides
     @Singleton
-    fun provideAppDatabase(@ApplicationContext appContext: Context): CityRoomDatabase {
+    fun provideAppDatabase(@ApplicationContext appContext: Context): ForecastRoomDatabase {
         return Room.databaseBuilder(
             appContext,
-            CityRoomDatabase::class.java,
+            ForecastRoomDatabase::class.java,
             "city_database",
         ).build()
     }

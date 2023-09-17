@@ -19,5 +19,6 @@
     <string name="dismiss_dialog_button_text">Close</string>
     <string name="CityListFragment">CityListFragment</string>
     <string name="CityDetailFragment">CityDetailFragment</string>
+    <string name="no_network">No network</string>
 
 </resources>

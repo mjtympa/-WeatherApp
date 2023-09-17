@@ -13,14 +13,14 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mujeeb.weatherapp.R
-import com.mujeeb.weatherapp.common.utils.CustomDialog
-import com.mujeeb.weatherapp.common.utils.DataHandler
+import com.mujeeb.weatherapp.utils.CustomDialog
+import com.mujeeb.weatherapp.utils.DataHandler
 import com.mujeeb.weatherapp.data.enums.ErrorType
-import com.mujeeb.weatherapp.data.model.city_list.Result
 import com.mujeeb.weatherapp.databinding.FragmentCityListBinding
 import com.mujeeb.weatherapp.presentation.adapter.CityListAdapter
 import com.mujeeb.weatherapp.presentation.listener.CityListListener
 import com.mujeeb.weatherapp.presentation.viewmodel.CityListViewModel
+import com.mujeeb.weatherapp.presentation.viewstate.WeatherResultViewState
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -60,20 +60,21 @@ class CityListFragment : Fragment(), CityListListener {
         }
 
         viewModel.searchCity(args.city)
-        viewModel.cityResult.observe(viewLifecycleOwner) { dataHandler ->
+        viewModel.result.observe(viewLifecycleOwner) { dataHandler ->
             when (dataHandler) {
-                is DataHandler.SUCCESS -> dataHandler.data?.let { city ->
+                is DataHandler.LOADING -> binding.pbCityList.visibility = View.VISIBLE
+
+                is DataHandler.SUCCESS -> dataHandler.data?.let { cityListResponse ->
                     binding.pbCityList.visibility = View.INVISIBLE
-                    city.list?.let {
+                    cityListResponse.list?.let {
                         cityListAdapter.updateList(it)
                     }
                 }
 
-                is DataHandler.LOADING -> binding.pbCityList.visibility = View.VISIBLE
-
                 is DataHandler.ERROR -> dataHandler.error?.let {
                     if (it.errorType == ErrorType.NETWORK) {
                         showNoNetworkErrorMsg()
+                        viewModel.retrievedSavedLocalData()
                     } else {
                         CustomDialog.showSomethingWentWrongDialog(requireActivity()) {}
                     }
@@ -83,11 +84,11 @@ class CityListFragment : Fragment(), CityListListener {
     }
 
     private fun showNoNetworkErrorMsg() {
-        Toast.makeText(requireContext(), "No network", Toast.LENGTH_SHORT)
+        Toast.makeText(requireContext(), getString(R.string.no_network), Toast.LENGTH_SHORT)
     }
 
-    override fun onItemSelected(cityList: Result) {
-        cityList.id?.let {
+    override fun onItemSelected(result: WeatherResultViewState) {
+        result.id?.let {
             findNavController().navigate(
                 CityListFragmentDirections.navigateToDetailsFromList(
                     it,

@@ -8,22 +8,19 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.mujeeb.weatherapp.R
-import com.mujeeb.weatherapp.common.utils.DateUtils
-import com.mujeeb.weatherapp.common.utils.WindDirectionUtils
 import com.mujeeb.weatherapp.data.enums.Direction
-import com.mujeeb.weatherapp.data.model.city_list.Result
 import com.mujeeb.weatherapp.presentation.listener.CityListListener
+import com.mujeeb.weatherapp.presentation.viewstate.WeatherResultViewState
+import com.mujeeb.weatherapp.utils.toEstimatedDirection
+import com.mujeeb.weatherapp.utils.toTimeStampFromDate
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class CityListAdapter(private val listener: CityListListener, @ApplicationContext val context: Context, private val picasso: Picasso) :
     RecyclerView.Adapter<CityListAdapter.ViewHolder>() {
 
-    private var mValues: List<Result>? = null
+    private var mValues: List<WeatherResultViewState>? = null
 
-    private val dateUtils: DateUtils = DateUtils()
-
-    private val windDirectionUtils: WindDirectionUtils = WindDirectionUtils()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -32,27 +29,27 @@ class CityListAdapter(private val listener: CityListListener, @ApplicationContex
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentCity = mValues?.get(position)
+        val result = mValues?.get(position)
 
-        holder.location.text = String.format("%s %s", currentCity?.name, currentCity?.sys?.country)
+        holder.location.text = String.format("%s %s", result?.name, result?.sys?.country)
 
         holder.itemView.setOnClickListener {
-            if (currentCity != null) {
-                listener.onItemSelected(currentCity)
+            if (result != null) {
+                listener.onItemSelected(result)
             }
         }
 
-        holder.temperature.text = String.format("%s %s", context.getString(R.string.current_temperature), currentCity?.main?.temp)
+        holder.temperature.text = String.format("%s %s", context.getString(R.string.current_temperature), result?.main?.temp)
 
-        holder.windSpeed.text = String.format("%s %s", context.getString(R.string.wind_speed), currentCity?.wind?.speed)
+        holder.windSpeed.text = String.format("%s %s", context.getString(R.string.wind_speed), result?.wind?.speed)
 
-        holder.info.text = currentCity?.weather?.get(0)?.description
+        holder.info.text = result?.weather?.get(0)?.description
 
-        currentCity?.dt?.let { holder.timeOfMeasurement.text = dateUtils.toTimeStampFromDate(it.toLong()) }
+        result?.dt?.let { holder.timeOfMeasurement.text = it.toTimeStampFromDate() }
 
         var direction: Direction? = null
 
-        currentCity?.wind?.deg?.let { direction = windDirectionUtils.estimateDirection(it) }
+        result?.wind?.deg?.let { it.toEstimatedDirection() }
 
         val imageUrl = getImageUrl(direction)
 
@@ -68,7 +65,7 @@ class CityListAdapter(private val listener: CityListListener, @ApplicationContex
         return mValues?.size ?: 0
     }
 
-    fun updateList(cities: List<Result>) {
+    fun updateList(cities: List<WeatherResultViewState>) {
         this.mValues = cities
         notifyDataSetChanged()
     }

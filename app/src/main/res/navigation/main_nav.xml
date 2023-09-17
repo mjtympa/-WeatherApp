@@ -31,7 +31,7 @@
 
     <fragment
         android:id="@+id/cityDetailsFragment"
-        android:name="com.mujeeb.weatherapp.presentation.ui.CityDetailsFragment"
+        android:name="com.mujeeb.weatherapp.presentation.ui.CityForecastFragment"
         android:label="@string/CityDetailFragment"
         tools:layout="@layout/fragment_weather_list">
         <action
