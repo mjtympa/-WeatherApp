@@ -27,7 +27,7 @@ class CityForecastFragment : Fragment() {
     private val viewModel: CityForecastViewModel by viewModels()
 
     @Inject
-    lateinit var adapter: CityForecastAdapter
+    lateinit var cityForecastAdapter: CityForecastAdapter
 
     private lateinit var binding: FragmentWeatherListBinding
 
@@ -50,7 +50,7 @@ class CityForecastFragment : Fragment() {
                     linearLayoutManager.orientation,
                 ),
             )
-            adapter = adapter
+            adapter = cityForecastAdapter
         }
 
         viewModel.getWeatherData(args.id)
@@ -61,7 +61,7 @@ class CityForecastFragment : Fragment() {
                 is DataHandler.SUCCESS -> dataHandler.data?.let { response ->
                     binding.pbWeatherList.visibility = View.INVISIBLE
                     response.list?.let {
-                        adapter.updateList(it)
+                        cityForecastAdapter.updateList(it)
                     }
                 }
 

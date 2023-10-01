@@ -8,7 +8,7 @@ import com.mujeeb.weatherapp.domain.model.Forecast
 
 interface ApiMapper {
 
-    fun mapApiCityListResponseToDomain(apiCityListResponse: ApiCityListResponse?): CityListResponse
+    fun mapApiCityListResponseToDomain(apiCityListResponse: ApiCityListResponse): CityListResponse
 
 
     fun mapApiForecastToDomain(apiForecast: ApiForecast): Forecast
